@@ -269,5 +269,5 @@ public class FingerPrintAuthDialogFragment extends DialogFragment implements Tex
             mStage = PASS_WORD;
         }
     }
- 
+
 }

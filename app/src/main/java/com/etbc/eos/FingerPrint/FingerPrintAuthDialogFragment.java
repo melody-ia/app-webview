@@ -92,7 +92,7 @@ public class FingerPrintAuthDialogFragment extends DialogFragment implements Tex
         frame = (FrameLayout) v.findViewById(R.id.frame);
         final ObjectAnimator animator = ObjectAnimator.ofFloat(frame,"rotationY",360);
         animator.setDuration(1200);
-
+     
         mSecondDialogButton = (Button) v.findViewById(R.id.second_dialog_button);
         mSecondDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override

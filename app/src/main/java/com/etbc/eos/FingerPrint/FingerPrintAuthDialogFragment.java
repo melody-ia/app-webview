@@ -1,10 +1,9 @@
 package com.etbc.eos.FingerPrint;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.DialogFragment;
-
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
-
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
@@ -18,8 +17,8 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +36,7 @@ public class FingerPrintAuthDialogFragment extends DialogFragment implements Tex
     private View mBackupContent;
     private EditText mPassword;
     private ImageView mVisibilityOn , mVisibilityOff;
+    FrameLayout cardView;
 
 
     private FingerprintManagerCompat.CryptoObject mCryptoObject;
@@ -80,6 +80,7 @@ public class FingerPrintAuthDialogFragment extends DialogFragment implements Tex
         View v = inflater.inflate(R.layout.fingerprint_dialog_container, container, false);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         getDialog().setTitle(getString(R.string.payment_pro));
+
         mCancelButton = (Button) v.findViewById(R.id.cancel_button);
         mCancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,12 +89,17 @@ public class FingerPrintAuthDialogFragment extends DialogFragment implements Tex
             }
         });
 
+        cardView = (FrameLayout) v.findViewById(R.id.cardView);
+        final ObjectAnimator animator = ObjectAnimator.ofFloat(cardView,"rotationY",360);
+        animator.setDuration(1200);
+
         mSecondDialogButton = (Button) v.findViewById(R.id.second_dialog_button);
         mSecondDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mStage == FINGER_PRINT) {
                     goToBackup();
+                    animator.start();
                 } else {
                     verifyPassword();
                 }
@@ -120,8 +126,8 @@ public class FingerPrintAuthDialogFragment extends DialogFragment implements Tex
         mVisibilityOff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) { // 비밀번호 안보이게
-                mVisibilityOff.setVisibility(View.GONE);
                 mVisibilityOn.setVisibility(View.VISIBLE);
+                mVisibilityOff.setVisibility(View.GONE);
                 mPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 mPassword.setSelection(mPassword.getText().length());
             }

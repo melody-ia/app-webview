@@ -36,7 +36,7 @@ public class FingerPrintAuthDialogFragment extends DialogFragment implements Tex
     private View mBackupContent;
     private EditText mPassword;
     private ImageView mVisibilityOn , mVisibilityOff;
-    FrameLayout cardView;
+    FrameLayout frame;
 
 
     private FingerprintManagerCompat.CryptoObject mCryptoObject;
@@ -89,8 +89,8 @@ public class FingerPrintAuthDialogFragment extends DialogFragment implements Tex
             }
         });
 
-        cardView = (FrameLayout) v.findViewById(R.id.cardView);
-        final ObjectAnimator animator = ObjectAnimator.ofFloat(cardView,"rotationY",360);
+        frame = (FrameLayout) v.findViewById(R.id.frame);
+        final ObjectAnimator animator = ObjectAnimator.ofFloat(frame,"rotationY",360);
         animator.setDuration(1200);
 
         mSecondDialogButton = (Button) v.findViewById(R.id.second_dialog_button);

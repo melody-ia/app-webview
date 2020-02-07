@@ -1,16 +1,16 @@
 {
   "project_info": {
     "project_number": "987448004997",
-    "firebase_url": "https://etbc-30ae2.firebaseio.com",
-    "project_id": "etbc-30ae2",
-    "storage_bucket": "etbc-30ae2.appspot.com"
+    "firebase_url": "https://willsoft-30ae2.firebaseio.com",
+    "project_id": "willsoft-30ae2",
+    "storage_bucket": "willsoft-30ae2.appspot.com"
   },
   "client": [
     {
       "client_info": {
         "mobilesdk_app_id": "1:987448004997:android:56869690a2ab22ed",
         "android_client_info": {
-          "package_name": "com.etbc.eos"
+          "package_name": "com.willsoft.webview"
         }
       },
       "oauth_client": [

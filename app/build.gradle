@@ -3,12 +3,12 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.etbc.eos"
-        minSdkVersion 23
+        applicationId "com.willsoft.webview"
+        minSdkVersion 15
         targetSdkVersion 28
         versionCode 1
-        versionName "1.5"
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {

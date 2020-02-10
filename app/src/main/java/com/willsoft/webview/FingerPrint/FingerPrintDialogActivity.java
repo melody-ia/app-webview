@@ -1,6 +1,5 @@
-package com.etbc.eos.FingerPrint;
+package com.willsoft.webview.FingerPrint;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.app.Activity;
 import android.os.Bundle;
@@ -8,8 +7,8 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.willsoft.webview.R;
 
-import com.etbc.eos.R;
 
 public class FingerPrintDialogActivity extends Activity implements FingerPrintAuthDialogFragment.SecretAuthorize {
 

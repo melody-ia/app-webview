@@ -1,4 +1,4 @@
-package com.etbc.eos;
+package com.willsoft.webview;
 
 public interface MainToJavaScriptInterfaceData {
     void moveToFingerPrintDialogActivity(String userPwd, boolean check);

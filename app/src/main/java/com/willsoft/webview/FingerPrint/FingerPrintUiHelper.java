@@ -1,14 +1,13 @@
-package com.etbc.eos.FingerPrint;
+package com.willsoft.webview.FingerPrint;
 
 import android.content.Context;
 
 import androidx.core.hardware.fingerprint.FingerprintManagerCompat;
 
-import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.etbc.eos.R;
+import com.willsoft.webview.R;
 
 
 /**

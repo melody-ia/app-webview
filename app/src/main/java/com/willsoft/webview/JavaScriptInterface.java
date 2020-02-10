@@ -1,4 +1,4 @@
-package com.etbc.eos;
+package com.willsoft.webview;
 
 import android.util.Log;
 import android.webkit.JavascriptInterface;

@@ -1,34 +1,34 @@
 {
   "project_info": {
-    "project_number": "987448004997",
-    "firebase_url": "https://etbc-30ae2.firebaseio.com",
-    "project_id": "etbc-30ae2",
-    "storage_bucket": "etbc-30ae2.appspot.com"
+    "project_number": "285514947217",
+    "firebase_url": "https://multicoinpush.firebaseio.com",
+    "project_id": "multicoinpush",
+    "storage_bucket": "multicoinpush.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:987448004997:android:56869690a2ab22ed",
+        "mobilesdk_app_id": "1:285514947217:android:1307e9eeea556c43497d30",
         "android_client_info": {
           "package_name": "com.etbc.eos"
         }
       },
       "oauth_client": [
         {
-          "client_id": "987448004997-927ok8br5tq5a4usrkf2l3ugpinlug5o.apps.googleusercontent.com",
+          "client_id": "285514947217-i66ki556dkbq39t5co0tlcal8vg0ic13.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCEzspNh6-0H5ZsVZs-HkJZQOAt_wZIL6Q"
+          "current_key": "AIzaSyBqc63Agr5F1CzAFClEuw1FahPkcW6SARQ"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "987448004997-927ok8br5tq5a4usrkf2l3ugpinlug5o.apps.googleusercontent.com",
+              "client_id": "285514947217-i66ki556dkbq39t5co0tlcal8vg0ic13.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

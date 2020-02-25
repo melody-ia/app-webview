@@ -12,6 +12,7 @@ public class JavaScriptInterface {
 
     @JavascriptInterface
     public void callQrScanner() {
+        Log.d("TAG", "callQrScanner: ");
         mainToJavaScriptInterfaceData.moveToQrScannerActivity();
     }
 
@@ -20,5 +21,10 @@ public class JavaScriptInterface {
         Log.d("TAG", "callFingerPrint: " + userPwd);
         Log.d("TAG", "callFingerPrint: " + check);
         mainToJavaScriptInterfaceData.moveToFingerPrintDialogActivity(userPwd, check);
+    }
+
+    @JavascriptInterface
+    public void setFcmToken(String userId){
+        mainToJavaScriptInterfaceData.setFcmToken(userId);
     }
 }

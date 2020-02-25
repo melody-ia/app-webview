@@ -21,12 +21,22 @@ import android.widget.Toast;
 
 import com.etbc.eos.FingerPrint.FingerPrintDialogActivity;
 import com.etbc.eos.QrScan.QrScannerActivity;
+
+
+import com.etbc.eos.Retrofit.RetrofitConnection;
+import com.etbc.eos.Retrofit.retrofitData;
+import com.etbc.eos.SharedPreferences.PreferenceManager;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
 import com.karumi.dexter.listener.PermissionGrantedResponse;
 import com.karumi.dexter.listener.PermissionRequest;
 import com.karumi.dexter.listener.single.PermissionListener;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 
 public class MainActivity extends AppCompatActivity implements MainToJavaScriptInterfaceData {
 
@@ -131,6 +141,37 @@ public class MainActivity extends AppCompatActivity implements MainToJavaScriptI
                     }
                 }).check();
 
+    }
+
+    @Override
+    public void setFcmToken(String userId) {
+        Log.d("TAG", "setFcmToken: "+userId);
+        sendFcmTokenToServer(userId);
+    }
+
+    void sendFcmTokenToServer(String userId){
+        String fcmToken = PreferenceManager.getString(this,"fcmToken");
+        if(!fcmToken.isEmpty()){  // 새로운 fcm token이 있다면 서버로 저장 / 그렇지 않으면 retrofit 호출안함 (shared에 값이 있느냐 없느냐로 결정) / 매번 DB의 값을 불러와 대조 하는 것은 비효율적
+            Log.d("TAG", "onResponse: sendFcmTokenToServer");
+            RetrofitConnection retrofitConnection = new RetrofitConnection();
+            Call<retrofitData> call = retrofitConnection.server.setFcmToken(userId,fcmToken);
+            call.enqueue(new Callback<retrofitData>() {
+                @Override
+                public void onResponse(Call<retrofitData> call, Response<retrofitData> response) {
+                    Log.d("TAG", "onResponse:"+response);
+                    if(response.body().getResult().equals("OK")){
+                        PreferenceManager.setString(MainActivity.this,"fcmToken",null);
+                        Log.d("TAG", "onResponse: 저장 성공");
+                    }else if(response.body().getResult().equals("FAILED")){
+                        Log.d("TAG", "onResponse: 저장 실패");
+                    }
+                }
+                @Override
+                public void onFailure(Call<retrofitData> call, Throwable t) {
+                    Log.d("TAG", "onFailure: "+t);
+                }
+            });
+        }
     }
 
 }

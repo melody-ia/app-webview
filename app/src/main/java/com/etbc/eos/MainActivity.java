@@ -169,7 +169,8 @@ public class MainActivity extends AppCompatActivity implements MainToJavaScriptI
     public void setShareData(String toWallet) { // 공유하기
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("text/plain");
-        String url = "https://etbc.page.link/?link=http://etbc.page.link/?toWallet="+toWallet+"apn=com.etbc.eos";
+        String url = "https://etbc.page.link/qbvQ/?link=http://etbc.page.link/?toWallet="+toWallet+"apn=com.etbc.eos";
+//        String url = "https://etbc.page.link/qbvQ";
         intent.putExtra(Intent.EXTRA_TEXT, url);
         Intent chooser = Intent.createChooser(intent, "공유하기");
         startActivity(chooser);

@@ -36,5 +36,7 @@ dependencies {
 
     implementation 'com.squareup.retrofit2:retrofit:2.5.0' // 레트로핏
     implementation 'com.squareup.retrofit2:converter-gson:2.5.0' // 레트로핏 지슨
+
+    implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'
 }
 apply plugin: 'com.google.gms.google-services' // 에프씨엠

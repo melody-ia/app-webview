@@ -27,4 +27,17 @@ public class JavaScriptInterface {
     public void setFcmToken(String userId){
         mainToJavaScriptInterfaceData.setFcmToken(userId);
     }
+
+    @JavascriptInterface
+    public void openNewWebView(String url){
+        Log.d("TAG", "openNewWebView: "+url);
+        mainToJavaScriptInterfaceData.setMoveToWebPage(url);
+    }
+
+    @JavascriptInterface
+    public void share(String toWallet){
+        Log.d("TAG", "toWallet: "+toWallet);
+
+        mainToJavaScriptInterfaceData.setShareData(toWallet);
+    }
 }

@@ -6,4 +6,8 @@ public interface MainToJavaScriptInterfaceData {
     void moveToQrScannerActivity();
 
     void setFcmToken(String userId);
+
+    void setMoveToWebPage(String url);
+
+    void setShareData(String toWallet);
 }

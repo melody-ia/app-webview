@@ -4,8 +4,11 @@ import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,6 +29,10 @@ import com.etbc.eos.QrScan.QrScannerActivity;
 import com.etbc.eos.Retrofit.RetrofitConnection;
 import com.etbc.eos.Retrofit.retrofitData;
 import com.etbc.eos.SharedPreferences.PreferenceManager;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.karumi.dexter.Dexter;
 import com.karumi.dexter.PermissionToken;
 import com.karumi.dexter.listener.PermissionDeniedResponse;
@@ -87,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements MainToJavaScriptI
             }
         });
 
+        handleDeepLink();
     }
 
     public void onBackPressed() {
@@ -149,6 +157,24 @@ public class MainActivity extends AppCompatActivity implements MainToJavaScriptI
         sendFcmTokenToServer(userId);
     }
 
+    @Override
+    public void setMoveToWebPage(String url) {
+        Intent intent = new Intent(Intent.ACTION_VIEW);
+        Uri uri = Uri.parse(url);
+        intent.setData(uri);
+        startActivity(intent);
+    }
+
+    @Override
+    public void setShareData(String toWallet) { // 공유하기
+        Intent intent = new Intent(Intent.ACTION_SEND);
+        intent.setType("text/plain");
+        String url = "https://etbc.page.link/?link=http://etbc.page.link/?toWallet="+toWallet+"apn=com.etbc.eos";
+        intent.putExtra(Intent.EXTRA_TEXT, url);
+        Intent chooser = Intent.createChooser(intent, "공유하기");
+        startActivity(chooser);
+    }
+
     void sendFcmTokenToServer(String userId){
         String fcmToken = PreferenceManager.getString(this,"fcmToken");
         if(!fcmToken.isEmpty()){  // 새로운 fcm token이 있다면 서버로 저장 / 그렇지 않으면 retrofit 호출안함 (shared에 값이 있느냐 없느냐로 결정) / 매번 DB의 값을 불러와 대조 하는 것은 비효율적
@@ -172,6 +198,29 @@ public class MainActivity extends AppCompatActivity implements MainToJavaScriptI
                 }
             });
         }
+    }
+
+    private void handleDeepLink(){ // 공유하기 링크를 타고 들어왔을때
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
+                    @Override
+                    public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
+
+                        if(pendingDynamicLinkData != null){
+                            Uri  deepLink = pendingDynamicLinkData.getLink();
+                            Log.d("TAG", "onSuccess: "+deepLink.getQueryParameter("toWallet"));
+
+                        }
+
+                    }
+                })
+                .addOnFailureListener(this, new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("TAG", "onFailure: "+e);
+                    }
+                });
     }
 
 }

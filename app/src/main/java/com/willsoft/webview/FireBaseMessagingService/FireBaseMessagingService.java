@@ -1,4 +1,4 @@
-package com.etbc.eos.FireBaseMessagingService;
+package com.willsoft.webview.FireBaseMessagingService;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -12,9 +12,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.util.Log;
 import androidx.core.app.NotificationCompat;
-import com.etbc.eos.MainActivity;
-import com.etbc.eos.R;
-import com.etbc.eos.SharedPreferences.PreferenceManager;
+import com.willsoft.webview.MainActivity;
+import com.willsoft.webview.R;
+import com.willsoft.webview.SharedPreferences.PreferenceManager;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 

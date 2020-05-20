@@ -1,10 +1,9 @@
-package com.etbc.eos;
+package com.willsoft.webview;
 
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 
@@ -20,17 +19,20 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
-import com.etbc.eos.FingerPrint.FingerPrintDialogActivity;
-import com.etbc.eos.QrScan.QrScannerActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.dynamiclinks.ShortDynamicLink;
+import com.willsoft.webview.FingerPrint.FingerPrintDialogActivity;
+import com.willsoft.webview.QrScan.QrScannerActivity;
 
 
-import com.etbc.eos.Retrofit.RetrofitConnection;
-import com.etbc.eos.Retrofit.retrofitData;
-import com.etbc.eos.SharedPreferences.PreferenceManager;
+import com.willsoft.webview.Retrofit.RetrofitConnection;
+import com.willsoft.webview.Retrofit.retrofitData;
+import com.willsoft.webview.SharedPreferences.PreferenceManager;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 import com.karumi.dexter.Dexter;
@@ -121,9 +123,8 @@ public class MainActivity extends AppCompatActivity implements MainToJavaScriptI
     }
 
     @Override
-    public void moveToFingerPrintDialogActivity(String userPwd, boolean check) {
+    public void moveToFingerPrintDialogActivity(boolean check) {
         Intent intent = new Intent(this, FingerPrintDialogActivity.class);
-        intent.putExtra("userPwd", userPwd);
         intent.putExtra("check", check);
         startActivityForResult(intent, REQUEST_FINGER_PRINT_CODE);
     }
@@ -153,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements MainToJavaScriptI
 
     @Override
     public void setFcmToken(String userId) {
-        Log.d("TAG", "setFcmToken: "+userId);
+        Log.d("TAG", "setFcmToken: " + userId);
         sendFcmTokenToServer(userId);
     }
 
@@ -167,51 +168,83 @@ public class MainActivity extends AppCompatActivity implements MainToJavaScriptI
 
     @Override
     public void setShareData(String toWallet) { // 공유하기
-        Intent intent = new Intent(Intent.ACTION_SEND);
-        intent.setType("text/plain");
-        String url = "https://etbc.page.link/qbvQ/?link=http://etbc.page.link/?toWallet="+toWallet+"apn=com.etbc.eos";
-//        String url = "https://etbc.page.link/qbvQ";
-        intent.putExtra(Intent.EXTRA_TEXT, url);
-        Intent chooser = Intent.createChooser(intent, "공유하기");
-        startActivity(chooser);
+
+        Task<ShortDynamicLink> shortDynamicLinkTask = FirebaseDynamicLinks.getInstance().createDynamicLink()
+                .setLink(Uri.parse("http://test.mouwallet.com/wallet/send.php?to_wallet=" + toWallet))
+                .setDomainUriPrefix("https://willsoft.page.link/")
+                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder("com.willsoft.webview").build())
+                .buildShortDynamicLink()
+                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
+                    @Override
+                    public void onComplete(@NonNull Task<ShortDynamicLink> task) {
+                        if (task.isSuccessful()) {
+                            // Short link created
+                            Uri shortLink = task.getResult().getShortLink();
+                            Uri flowchartLink = task.getResult().getPreviewLink();
+
+                            Log.d("TAG", "onComplete: " + shortLink);
+                            Log.d("TAG", "onComplete: " + flowchartLink);
+
+                            Intent intent = new Intent(Intent.ACTION_SEND);
+                            intent.setType("text/plain");
+
+                            intent.putExtra(Intent.EXTRA_TEXT, shortLink.toString());
+                            Intent chooser = Intent.createChooser(intent, "공유하기");
+                            startActivity(chooser);
+
+                        } else {
+                            // Error
+                            // ...
+                        }
+                    }
+                });
     }
 
-    void sendFcmTokenToServer(String userId){
-        String fcmToken = PreferenceManager.getString(this,"fcmToken");
-        if(!fcmToken.isEmpty()){  // 새로운 fcm token이 있다면 서버로 저장 / 그렇지 않으면 retrofit 호출안함 (shared에 값이 있느냐 없느냐로 결정) / 매번 DB의 값을 불러와 대조 하는 것은 비효율적
+    @Override
+    public void setUserId(String userId) {
+        PreferenceManager.setString(this,"userId",userId);
+    }
+
+    void sendFcmTokenToServer(String userId) {
+        String fcmToken = PreferenceManager.getString(this, "fcmToken");
+        if (!fcmToken.isEmpty()) {  // 새로운 fcm token이 있다면 서버로 저장 / 그렇지 않으면 retrofit 호출안함 (shared에 값이 있느냐 없느냐로 결정) / 매번 DB의 값을 불러와 대조 하는 것은 비효율적
             Log.d("TAG", "onResponse: sendFcmTokenToServer");
             RetrofitConnection retrofitConnection = new RetrofitConnection();
-            Call<retrofitData> call = retrofitConnection.server.setFcmToken(userId,fcmToken);
+            Call<retrofitData> call = retrofitConnection.server.setFcmToken(userId, fcmToken);
             call.enqueue(new Callback<retrofitData>() {
                 @Override
                 public void onResponse(Call<retrofitData> call, Response<retrofitData> response) {
-                    Log.d("TAG", "onResponse:"+response);
-                    if(response.body().getResult().equals("OK")){
-                        PreferenceManager.setString(MainActivity.this,"fcmToken",null);
+                    Log.d("TAG", "onResponse:" + response);
+                    if (response.body().getResult().equals("OK")) {
+                        PreferenceManager.setString(MainActivity.this, "fcmToken", null);
                         Log.d("TAG", "onResponse: 저장 성공");
-                    }else if(response.body().getResult().equals("FAILED")){
+                    } else if (response.body().getResult().equals("FAILED")) {
                         Log.d("TAG", "onResponse: 저장 실패");
                     }
                 }
+
                 @Override
                 public void onFailure(Call<retrofitData> call, Throwable t) {
-                    Log.d("TAG", "onFailure: "+t);
+                    Log.d("TAG", "onFailure: " + t);
                 }
             });
         }
     }
 
-    private void handleDeepLink(){ // 공유하기 링크를 타고 들어왔을때
+    private void handleDeepLink() { // 공유하기 링크를 타고 들어왔을때
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(getIntent())
                 .addOnSuccessListener(this, new OnSuccessListener<PendingDynamicLinkData>() {
                     @Override
                     public void onSuccess(PendingDynamicLinkData pendingDynamicLinkData) {
 
-                        if(pendingDynamicLinkData != null){
-                            Uri  deepLink = pendingDynamicLinkData.getLink();
-                            Log.d("TAG", "onSuccess: "+deepLink.getQueryParameter("toWallet"));
-
+                        if (pendingDynamicLinkData != null) {
+                            Uri deepLink = pendingDynamicLinkData.getLink();
+                            Uri data = getIntent().getData();
+                            Log.d("TAG", "onSuccess: " + deepLink);
+                            Log.d("TAG", "onSuccess: " + deepLink.getQueryParameter("toWallet"));
+                            Log.d("TAG", "onSuccess: " + data.getQueryParameter("toWallet"));
+                            webView.loadUrl(String.valueOf(deepLink));
                         }
 
                     }
@@ -219,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements MainToJavaScriptI
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.d("TAG", "onFailure: "+e);
+                        Log.d("TAG", "onFailure: " + e);
                     }
                 });
     }

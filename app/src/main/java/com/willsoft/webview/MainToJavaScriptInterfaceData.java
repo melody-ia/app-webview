@@ -1,7 +1,7 @@
-package com.etbc.eos;
+package com.willsoft.webview;
 
 public interface MainToJavaScriptInterfaceData {
-    void moveToFingerPrintDialogActivity(String userPwd, boolean check);
+    void moveToFingerPrintDialogActivity(boolean check);
 
     void moveToQrScannerActivity();
 
@@ -10,4 +10,6 @@ public interface MainToJavaScriptInterfaceData {
     void setMoveToWebPage(String url);
 
     void setShareData(String toWallet);
+
+    void setUserId(String userId);
 }

@@ -1,4 +1,4 @@
-package com.etbc.eos.FingerPrint;
+package com.willsoft.webview.FingerPrint;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -9,6 +9,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +24,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.etbc.eos.R;
+import com.willsoft.webview.R;
+import com.willsoft.webview.Retrofit.RetrofitConnection;
+import com.willsoft.webview.Retrofit.retrofitData;
+import com.willsoft.webview.SharedPreferences.PreferenceManager;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
 
@@ -50,11 +58,9 @@ public class FingerPrintAuthDialogFragment extends DialogFragment implements Tex
 
     private Animation vibrateAnim;
 
-    String userPwd;
     private boolean check;
 
-    public FingerPrintAuthDialogFragment(String userPwd, boolean check) {
-        this.userPwd = userPwd;
+    public FingerPrintAuthDialogFragment(boolean check) {
         this.check = check;
     }
 
@@ -189,14 +195,30 @@ public class FingerPrintAuthDialogFragment extends DialogFragment implements Tex
      */
     private void verifyPassword() {
 
-        if (mPassword.getText().toString().equals(userPwd)) {
-            dismiss();
-            secretAuthorize.success();
-            mStage = FINGER_PRINT;
-        } else {
-            mBackupContent.startAnimation(vibrateAnim);
-            mPassword.setText("");
-        }
+        String userId = PreferenceManager.getString(getContext(),"userId");
+        String userPwd = mPassword.getText().toString();
+        RetrofitConnection retrofitConnection = new RetrofitConnection();
+        Call<retrofitData> call = retrofitConnection.server.checkPwd(userId,userPwd);
+        call.enqueue(new Callback<retrofitData>() {
+            @Override
+            public void onResponse(Call<retrofitData> call, Response<retrofitData> response) {
+                Log.d("TAG", "onResponse0: "+response);
+                if(response.body().getResult().equals("OK")){
+                    dismiss();
+                    secretAuthorize.success();
+                    mStage = FINGER_PRINT;
+                }else{
+                    mBackupContent.startAnimation(vibrateAnim);
+                    mPassword.setText("");
+                    Log.d("TAG", "onResponse1: "+response);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<retrofitData> call, Throwable t) {
+                Log.d("TAG", "onResponse: "+ t);
+            }
+        });
     }
 
     /**

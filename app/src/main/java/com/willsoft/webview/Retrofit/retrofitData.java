@@ -1,4 +1,4 @@
-package com.etbc.eos.Retrofit;
+package com.willsoft.webview.Retrofit;
 
 public class retrofitData {
     String userId,fcmToken,result;

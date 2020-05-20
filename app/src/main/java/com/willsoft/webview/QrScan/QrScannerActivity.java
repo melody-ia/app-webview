@@ -1,4 +1,4 @@
-package com.etbc.eos.QrScan;
+package com.willsoft.webview.QrScan;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.ViewGroup;
 
-import com.etbc.eos.R;
+import com.willsoft.webview.R;
 import com.google.zxing.Result;
 
 

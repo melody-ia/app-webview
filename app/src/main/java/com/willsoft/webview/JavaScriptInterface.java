@@ -1,7 +1,9 @@
-package com.etbc.eos;
+package com.willsoft.webview;
 
 import android.util.Log;
 import android.webkit.JavascriptInterface;
+
+import com.willsoft.webview.SharedPreferences.PreferenceManager;
 
 public class JavaScriptInterface {
     MainToJavaScriptInterfaceData mainToJavaScriptInterfaceData;
@@ -17,15 +19,15 @@ public class JavaScriptInterface {
     }
 
     @JavascriptInterface
-    public void callFingerPrint(String userPwd, boolean check) {
-        Log.d("TAG", "callFingerPrint: " + userPwd);
+    public void callFingerPrint(boolean check) {
         Log.d("TAG", "callFingerPrint: " + check);
-        mainToJavaScriptInterfaceData.moveToFingerPrintDialogActivity(userPwd, check);
+        mainToJavaScriptInterfaceData.moveToFingerPrintDialogActivity(check);
     }
 
     @JavascriptInterface
     public void setFcmToken(String userId){
         mainToJavaScriptInterfaceData.setFcmToken(userId);
+        mainToJavaScriptInterfaceData.setUserId(userId);
     }
 
     @JavascriptInterface
@@ -40,4 +42,5 @@ public class JavaScriptInterface {
 
         mainToJavaScriptInterfaceData.setShareData(toWallet);
     }
+
 }

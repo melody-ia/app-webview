@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.etbc.eos">
+    package="com.willsoft.webview">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA" />
@@ -15,19 +15,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".QrScan.QrScannerActivity"></activity>
+        <activity android:name="com.willsoft.webview.QrScan.QrScannerActivity"></activity>
         <activity
-            android:name=".FingerPrint.FingerPrintDialogActivity"
+            android:name="com.willsoft.webview.FingerPrint.FingerPrintDialogActivity"
             android:configChanges="orientation"
-            android:screenOrientation="portrait"
+            android:screenOrientation="unspecified"
             android:theme="@android:style/Theme.Light.NoTitleBar"
             tools:replace="screenOrientation" />
         <activity
-            android:name=".MainActivity"
+            android:name="com.willsoft.webview.MainActivity"
             android:label="@string/app_name"
             android:networkSecurityConfig="@xml/network_security_config"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.NoActionBar">
+            android:screenOrientation="unspecified"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustPan" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -40,10 +41,10 @@
             <category android:name="android.intent.category.DEFAULT" />
             <category android:name="android.intent.category.BROWSABLE" />
                 <data
-                    android:host="etbc.page.link"
+                    android:host="willsoft.page.link"
                     android:scheme="http"/>
                 <data
-                    android:host="etbc.page.link"
+                    android:host="willsoft.page.link"
                     android:scheme="https"/>
             </intent-filter>
 
@@ -53,7 +54,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <service android:name="com.etbc.eos.FireBaseMessagingService.FireBaseMessagingService">
+        <service android:name="com.willsoft.webview.FireBaseMessagingService.FireBaseMessagingService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>

@@ -1,4 +1,4 @@
-package com.etbc.eos.Retrofit;
+package com.willsoft.webview.Retrofit;
 
 import retrofit2.Call;
 import retrofit2.http.Field;
@@ -10,4 +10,10 @@ public interface RetrofitInterface {
     @FormUrlEncoded
     @POST("registerFcmToken.php")
     Call<retrofitData> setFcmToken(@Field("userId") String userId, @Field("fcmToken") String fcmToken);
+
+    @FormUrlEncoded
+    @POST("check_finger_pwd.php")
+    Call<retrofitData> checkPwd(@Field("user_id") String userId,@Field("user_pwd") String userPwd);
+
 }
+

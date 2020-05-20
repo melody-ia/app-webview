@@ -1,11 +1,11 @@
-package com.etbc.eos.Retrofit;
+package com.willsoft.webview.Retrofit;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitConnection {
 
-    String URL = "http://211.238.13.151/mou/wallet/";
+    String URL = "http://wallet.willsoft.kr/wallet/";
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(URL)

@@ -1,4 +1,4 @@
-package com.etbc.eos.SharedPreferences;
+package com.willsoft.webview.SharedPreferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;

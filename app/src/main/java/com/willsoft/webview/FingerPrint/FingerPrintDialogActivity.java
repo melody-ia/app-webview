@@ -1,6 +1,5 @@
-package com.etbc.eos.FingerPrint;
+package com.willsoft.webview.FingerPrint;
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.app.Activity;
 import android.os.Bundle;
@@ -9,12 +8,11 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 
-import com.etbc.eos.R;
+import com.willsoft.webview.R;
 
 public class FingerPrintDialogActivity extends Activity implements FingerPrintAuthDialogFragment.SecretAuthorize {
 
     private FingerPrintAuthDialogFragment mFragment;
-    String userPwd;
     boolean check;
 
     @Override
@@ -24,7 +22,7 @@ public class FingerPrintDialogActivity extends Activity implements FingerPrintAu
 
         init();
         //세팅부분
-        mFragment = new FingerPrintAuthDialogFragment(userPwd, check);
+        mFragment = new FingerPrintAuthDialogFragment(check);
 
         mFragment.setCallback(this);
         mFragment.show(this.getFragmentManager(), "my_fragment");
@@ -37,7 +35,6 @@ public class FingerPrintDialogActivity extends Activity implements FingerPrintAu
     }
 
     private void init() {
-        userPwd = getIntent().getStringExtra("userPwd");
         check = getIntent().getBooleanExtra("check", false);
     }
 

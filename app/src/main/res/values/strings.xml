@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ETBC</string>
+    <string name="app_name">WILLSOFT</string>
     <string name="user_agent_suffix"> webview//1.0</string>
 
     <string name="abc_action_mode_done">Done</string>
@@ -28,7 +28,7 @@
 <!--    http://211.238.13.151/mou3/wallet/dashboard.php-->
 <!--    http://211.238.13.151/mou/wallet/withAndroidExample.php-->
 <!--    http://test.mouwallet.com-->
-    <string name="test">http://test.mouwallet.com</string>
+    <string name="test">http://wallet.willsoft.kr</string>
     <string name="backbutton">한번 더 뒤로가기 누르면 어플이 종료 됩니다.</string>
     <string name="errornetwork">네트워크 문제 발생</string>
     <string name="end_app">한번 더 뒤로가기 누르면 어플이 종료 됩니다.</string>
